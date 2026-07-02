@@ -249,19 +249,19 @@ SELECT backend,
 FROM backend;
 
 
---Views ke basis par creators ki ranking
+--rank creator on the basis of views
 SELECT Creator_Name,
        Views_count,
        DENSE_RANK() OVER (ORDER BY Views_count DESC) AS Ranking
 FROM Creators;
 
---Views compare karo previous creator ke views se
+--compare views with previous creator views
 SELECT Creator_Name,
        Views_count,
        LAG(Views_count) OVER (ORDER BY Views_count DESC) AS Previous_Views
 FROM Creators;
 
---Har creator ke next creator ke views
+--views next to creator
 
 SELECT Creator_Name,
        Views_count,
@@ -269,7 +269,7 @@ SELECT Creator_Name,
 FROM Creators;
 
 
---Views ke according creators ko 4 groups me divide karo.
+-- divide creator into 4 group according to views.
 SELECT Creator_Name,
        Views_count,
        NTILE(4) OVER (ORDER BY Views_count DESC) AS View_Group
@@ -311,13 +311,13 @@ ADD City VARCHAR(50);
 CREATE INDEX idx_creator_name
 ON Creators (Creator_Name);
 
---Har Brand ka minimum views wala creator nikalo
+----Find the creator with the minimum views for each brand.
 SELECT Brand_ID,
        MIN(Views_COUNT) AS Min_Views
 FROM Creators
 GROUP BY Brand_ID;
 
---Top 2 ranked creators per Brand nikalo.
+--Top 2 ranked creators per Brand 
 SELECT Creator_Name,
        Brand_ID,
        Views_count
@@ -333,7 +333,7 @@ FROM (
 ) t
 WHERE Rank <= 2;
 
---Display the creators whose views are higher than the previous creator s views. (Use LAG())
+--Display the creators whose views are higher than the previous creator s views. 
 SELECT Creator_Name,
        Views_COUNT,
        Previous_Views
@@ -357,7 +357,8 @@ SELECT backend_Name,
 FROM Backend;
 
 
---Ek report banao jisme: Creator Name Brand Name Views Dense Rank Previous Views Next Views
+--Create a report that includes the Creator Name, Brand Name, Views, Dense Rank, 
+--Previous Views, and Next Views for each creator.
 SELECT
     c.Creator_Name,
     b.Brand_Name,
